@@ -4,7 +4,7 @@ const bodyParser = require('body-parser') //paquete para obtener la info del cue
 const bcrypt = require('bcrypt')  //paquete para encriptar contrasenas
 const _ = require('underscore')  //la libreria underscoreJS nos va a ayudar a seleccionar solos los elementos de un objeto que queremo modificar
 const Usuario = require('../models/usuario')
-
+const {verificaToken, verificaUser} = require('../middlewares/autenticacion')
 
 
 // parse application/x-www-form-urlencoded
@@ -15,7 +15,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())   //app.use son midlewares
 
 
-app.get('/usuario', function (req, res) {
+app.get('/usuario', verificaToken, (req, res)=>{
+
     
     let desde = req.query.desde || 0;   //extrae el parametro pasado via query en la url "usuarios?desde=5"
     desde = Number(desde)
@@ -49,7 +50,7 @@ app.get('/usuario', function (req, res) {
   })
 
   
-app.post('/usuario', function (req, res) {
+app.post('/usuario', [verificaToken, verificaUser], (req, res)=> {
   
    let body = req.body
 
@@ -82,9 +83,35 @@ app.post('/usuario', function (req, res) {
   
      })
   
+
+     app.put('/usuario/:id',  function(req, res) {
+
+        let id = req.params.id;
+        let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado']);
+    
+        Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, usuarioDB) => {
+    
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
+    
+    
+    
+            res.json({
+                ok: true,
+                usuario: usuarioDB
+            });
+    
+        })
+    
+    });
+    
   
-  
-app.put('/usuario/:id', function (req, res) {  //put actualiza datos
+/*app.put('/usuario/:id',  (req, res)=>{  //put actualiza datos
+
   
       let id = req.params.id
       let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado'])  //la funcion pick de underscore filtra solo las propiedades elegidas en el array del objeto
@@ -92,7 +119,16 @@ app.put('/usuario/:id', function (req, res) {  //put actualiza datos
       Usuario.findByIdAndUpdate(id,     //findByIdAndUpdate es un metodo de mongoose los parametros que recibe son
                                 body,   //el id a buscar, el objeto a modificar, 
                                 {new:true, runValidators:true}, //un objeto con opciones (aca usamos la opcion new, para que se imprima el objeto actualizado, y runvalidators ers para que se ejecuten las validaciones del configuradas en el modelo)
-                                (error, usuarioDB)=>{   // y un callback                                                                  
+                                (error, usuarioDB)=>{   // y un callback   
+                                    
+            console.log(id);
+                    
+            console.log(body);
+            
+                    
+            console.log(usuarioDB);
+
+           
             if(error){
                 return res.status(400).json({
                     ok:false,
@@ -106,10 +142,10 @@ app.put('/usuario/:id', function (req, res) {  //put actualiza datos
       })
       
 
-    })
+    })*/
   
   
-app.delete('/usuario/:id', function (req, res) {  //put actualiza datos
+app.delete('/usuario/:id',  [verificaToken, verificaUser],function (req, res) {  //put actualiza datos
       
     let body = req.body
     let id = req.params.id

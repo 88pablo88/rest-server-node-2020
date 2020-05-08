@@ -4,8 +4,9 @@ const mongoose = require('mongoose');
 
 const app = express()
 
-app.use( require('./routes/usuario') )
 
+//referencia global de rutas
+app.use( require('./routes/index') )
 
  
 mongoose.connect(process.env.urlDB ,
