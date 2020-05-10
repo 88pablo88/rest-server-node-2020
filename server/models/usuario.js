@@ -5,7 +5,7 @@ const uniqueValidator = require('mongoose-unique-validator')  //paquete para val
 let Schema = mongoose.Schema;
 
 const rolesValidos = {
-    values: ['USER', 'ADMIN'],                //la propiedad values debe llevar ese nombre
+    values: ['USER', 'ADMIN', 'USER_ROL'],                //la propiedad values debe llevar ese nombre
     message: '{VALUE} no es un rol valido'  //la propieda message debe llevar ese nombre, y {VALUE} inyecta el valor ingresado por el usuario den el mesaje de error
 }
 

@@ -64,12 +64,12 @@ app.post('/usuario', [verificaToken, verificaUser], (req, res)=> {
 
    usuario.save( (error, usuarioDB) =>{  //la funcion save (de mongoose), recibira como parametro un callback con dos parametros, un error si existe, o el usuario a grabar en la base de datos
 
-    if(error){
-       return res.status(400).json({
-            ok:false,
-            error
-        })
-    }
+        if(error){
+        return res.status(400).json({
+                ok:false,
+                error
+            })
+        }
 
     res.json({      //el status no se envia porque esta implicito
         ok: true,                   //las propiedades del objeto json son configurables, aca se asignaron la prop 'ok' y 'usuario'

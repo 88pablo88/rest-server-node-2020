@@ -32,3 +32,10 @@ process.env.CADUCIDAD_TOKEN =  60*60*24*30   //Expira en 30 dias
 //Configuracion del SEED de autenticacion
 
 process.env.SEED = process.env.SEED || 'este-es-el-seed-produccion'  //MONGO_URI es una variable declarada en heroku 
+
+
+
+//google client ID
+
+process.env.CLIENT_ID = process.env.CLIENT_ID || '701702362007-at269bq38ac21bi5qna5mfv4kkj8gpr8.apps.googleusercontent.com'
+ 
