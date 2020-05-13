@@ -26,7 +26,7 @@ process.env.urlDB = urlDB  // asignamos al objeto global process la propiedad ur
 
 //Expiracion del token 60segs * 60min * 24hs * 30*
 
-process.env.CADUCIDAD_TOKEN =  60*60*24*30   //Expira en 30 dias
+process.env.CADUCIDAD_TOKEN =  '48h'   //Expira en 30 dias
 
 
 //Configuracion del SEED de autenticacion
